@@ -1,6 +1,10 @@
 {
 	"apps": {
-		"system": { "latestUrl": "" },
-		"todo": { "latestUrl": "" }
+		"system": {
+			"latestUrl": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/apps/system/latest.json"
+		},
+		"todo": {
+			"latestUrl": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/apps/todo/latest.json"
+		}
 	}
 }
