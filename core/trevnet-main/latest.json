@@ -1,10 +1,10 @@
 {
-	"version": "",
-	"published": "",
-	"downloads": {
-		"linux-amd64": "",
-		"linux-arm64": "",
-		"darwin-amd64": "",
-		"darwin-arm64": ""
-	}
+  "version": "0.1.2",
+  "published": "2025-11-27T01:40:22Z",
+  "downloads": {
+    "linux-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.2/trevnet-main-linux-amd64.tar.gz",
+    "linux-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.2/trevnet-main-linux-arm64.tar.gz",
+    "darwin-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.2/trevnet-main-darwin-amd64.tar.gz",
+    "darwin-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.2/trevnet-main-darwin-arm64.tar.gz"
+  }
 }
