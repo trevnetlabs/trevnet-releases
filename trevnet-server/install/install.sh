@@ -68,14 +68,28 @@ fetch_metadata() {
         error "Failed to fetch metadata from $url"
     fi
     
+    # Check if file was downloaded and is not empty
+    if [[ ! -s "$temp_file" ]]; then
+        error "Downloaded metadata file is empty or does not exist"
+    fi
+    
     # Check if jq is available
     if ! command -v jq &> /dev/null; then
         error "jq is required but not installed. Please install jq first."
     fi
     
-    # Validate metadata
+    # Validate metadata is valid JSON
+    if ! jq empty "$temp_file" > /dev/null 2>&1; then
+        local file_contents
+        file_contents=$(cat "$temp_file")
+        error "Invalid JSON in metadata file. Contents: $file_contents"
+    fi
+    
+    # Validate metadata structure
     if ! jq -e '.version and .downloads' "$temp_file" > /dev/null 2>&1; then
-        error "Invalid metadata format"
+        local file_contents
+        file_contents=$(cat "$temp_file")
+        error "Invalid metadata format. Missing 'version' or 'downloads' field. Contents: $file_contents"
     fi
     
     cat "$temp_file"
@@ -216,8 +230,36 @@ main() {
     
     # Fetch metadata
     metadata=$(fetch_metadata "$METADATA_URL")
-    version=$(echo "$metadata" | jq -r '.version')
-    download_url=$(echo "$metadata" | jq -r ".downloads[\"$platform\"]")
+    
+    # Validate metadata was received
+    if [[ -z "$metadata" ]]; then
+        error "Failed to fetch metadata or metadata is empty"
+    fi
+    
+    # Parse version with better error handling
+    local jq_stderr
+    jq_stderr=$(mktemp)
+    version=$(echo "$metadata" | jq -r '.version' 2>"$jq_stderr") || {
+        local jq_error
+        jq_error=$(cat "$jq_stderr")
+        rm -f "$jq_stderr"
+        error "Failed to parse version from metadata. jq error: $jq_error. Metadata preview: ${metadata:0:200}"
+    }
+    rm -f "$jq_stderr"
+    
+    if [[ -z "$version" || "$version" == "null" ]]; then
+        error "Version is missing or null in metadata. Metadata preview: ${metadata:0:200}"
+    fi
+    
+    # Parse download URL with better error handling
+    jq_stderr=$(mktemp)
+    download_url=$(echo "$metadata" | jq -r ".downloads[\"$platform\"]" 2>"$jq_stderr") || {
+        local jq_error
+        jq_error=$(cat "$jq_stderr")
+        rm -f "$jq_stderr"
+        error "Failed to parse download URL from metadata. jq error: $jq_error. Metadata preview: ${metadata:0:200}"
+    }
+    rm -f "$jq_stderr"
     
     if [[ -z "$download_url" || "$download_url" == "null" ]]; then
         error "No download available for platform: $platform"
