@@ -23,11 +23,11 @@ error() {
 }
 
 info() {
-    echo -e "${GREEN}Info:${NC} $1"
+    echo -e "${GREEN}Info:${NC} $1" >&2
 }
 
 warn() {
-    echo -e "${YELLOW}Warning:${NC} $1"
+    echo -e "${YELLOW}Warning:${NC} $1" >&2
 }
 
 # Check if running as root
