@@ -1,10 +1,10 @@
 {
-  "version": "0.1.3",
-  "published": "2025-11-27T18:43:49Z",
+  "version": "0.1.6",
+  "published": "2025-11-29T23:02:10Z",
   "downloads": {
-    "linux-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.3/trevnet-main-linux-amd64.tar.gz",
-    "linux-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.3/trevnet-main-linux-arm64.tar.gz",
-    "darwin-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.3/trevnet-main-darwin-amd64.tar.gz",
-    "darwin-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/core/trevnet-main/v0.1.3/trevnet-main-darwin-arm64.tar.gz"
+    "linux-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/trevnet-server/v0.1.6/trevnet-server-linux-amd64.tar.gz",
+    "linux-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/trevnet-server/v0.1.6/trevnet-server-linux-arm64.tar.gz",
+    "darwin-amd64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/trevnet-server/v0.1.6/trevnet-server-darwin-amd64.tar.gz",
+    "darwin-arm64": "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/trevnet-server/v0.1.6/trevnet-server-darwin-arm64.tar.gz"
   }
 }
