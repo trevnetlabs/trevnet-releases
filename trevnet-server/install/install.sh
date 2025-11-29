@@ -246,7 +246,7 @@ main() {
         info "Template not found locally, fetching from GitHub..."
         template_path=$(mktemp)
         template_is_temp=true
-        if ! curl -fsSL "https://raw.githubusercontent.com/trevnetlabs/trevnet-main/main/contrib/trevnet-server.service.template" -o "$template_path"; then
+        if ! curl -fsSL "https://raw.githubusercontent.com/trevnetlabs/trevnet-releases/main/trevnet-server/install/trevnet-server.service.template" -o "$template_path"; then
             error "Failed to fetch service template from GitHub"
         fi
     fi
