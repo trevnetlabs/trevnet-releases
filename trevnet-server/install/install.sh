@@ -8,7 +8,7 @@ SERVICE_NAME="trevnet-server"
 INSTALL_USER="${TREVNET_USER:-trevnet}"
 INSTALL_GROUP="${TREVNET_GROUP:-trevnet}"
 INSTALL_DIR="${TREVNET_INSTALL_DIR:-/opt/trevnet}"
-BINARY_DIR="${TREVNET_BINARY_DIR:-/usr/local/bin}"
+BINARY_INSTALL_DIR="${TREVNET_BINARY_INSTALL_DIR:-$INSTALL_DIR}"
 ENV_FILE="${TREVNET_ENV_FILE:-/etc/trevnet-server.env}"
 
 # Colors for output
@@ -97,11 +97,13 @@ fetch_metadata() {
     trap - EXIT
 }
 
-# Download and extract binary
+# Download and extract binary into an application-owned directory
 download_and_extract() {
     local download_url="$1"
     local platform="$2"
     local dest_dir="$3"
+    local owner="$4"
+    local group="$5"
     local temp_dir
     
     temp_dir=$(mktemp -d)
@@ -124,12 +126,14 @@ download_and_extract() {
         error "Binary $BINARY_NAME not found in archive"
     fi
     
-    # Create destination directory
+    # Create destination directory and ensure ownership
     mkdir -p "$dest_dir"
-    
+    chown "$owner:$group" "$dest_dir"
+
     # Install binary
     info "Installing binary to ${dest_dir}/${BINARY_NAME}..."
     install -m 755 "$extracted_binary" "${dest_dir}/${BINARY_NAME}"
+    chown "$owner:$group" "${dest_dir}/${BINARY_NAME}"
     
     rm -rf "$temp_dir"
     trap - EXIT
@@ -272,7 +276,7 @@ main() {
     create_user_group "$INSTALL_USER" "$INSTALL_GROUP" "$INSTALL_DIR"
     
     # Download and install binary
-    download_and_extract "$download_url" "$platform" "$BINARY_DIR"
+    download_and_extract "$download_url" "$platform" "$BINARY_INSTALL_DIR" "$INSTALL_USER" "$INSTALL_GROUP"
     
     # Find or fetch template
     local template_is_temp=false
@@ -303,7 +307,7 @@ main() {
         "$INSTALL_GROUP" \
         "$INSTALL_DIR" \
         "$ENV_FILE" \
-        "${BINARY_DIR}/${BINARY_NAME}"
+        "${BINARY_INSTALL_DIR}/${BINARY_NAME}"
     
     # Install service
     install_service "$service_file" "$SERVICE_NAME" "$INSTALL_DIR" "$INSTALL_USER" "$INSTALL_GROUP"
@@ -325,4 +329,3 @@ main() {
 }
 
 main "$@"
-
